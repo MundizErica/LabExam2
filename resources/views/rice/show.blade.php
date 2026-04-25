@@ -1,84 +1,70 @@
-@extends('layouts.app')
-
-@section('title', $rice->name)
-@section('page-title', 'Rice Menu → Product Detail')
-
-@section('content')
-<div class="row justify-content-center">
-    <div class="col-lg-7">
-        <div class="d-flex align-items-center gap-2 mb-3">
-            <a href="{{ route('rice.index') }}" class="btn btn-sm btn-outline-secondary">
-                <i class="bi bi-arrow-left"></i>
-            </a>
-            <h5 class="mb-0 fw-semibold">{{ $rice->name }}</h5>
+<x-app-layout>
+    <x-slot name="header">
+        <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ $rice->name }}</h2>
+                <p class="mt-1 text-sm text-gray-500">Rice product details and management options.</p>
+            </div>
+            <a href="{{ route('rice.index') }}" class="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">Back to List</a>
         </div>
+    </x-slot>
 
-        <div class="card mb-3">
-            <div class="card-body">
-                <div class="d-flex align-items-center gap-3 mb-4">
-                    <div style="width:56px;height:56px;background:#e8f5e9;border-radius:14px;
-                                display:flex;align-items:center;justify-content:center;">
-                        <i class="bi bi-bag-heart text-success" style="font-size:1.6rem;"></i>
+    <div class="py-6">
+        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
+            <div class="overflow-hidden rounded-lg bg-white shadow">
+                <div class="px-6 py-6 space-y-6">
+                    <div class="flex items-center gap-4">
+                        <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M4 3a1 1 0 00-1 1v12a1 1 0 001 1h12a1 1 0 001-1V4a1 1 0 00-1-1H4zm7 2a1 1 0 011 1v1a1 1 0 11-2 0V6a1 1 0 011-1z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">Rice Product #{{ $rice->id }}</p>
+                            <h3 class="text-2xl font-semibold text-gray-900">{{ $rice->name }}</h3>
+                        </div>
                     </div>
-                    <div>
-                        <h5 class="mb-0 fw-bold">{{ $rice->name }}</h5>
-                        <span class="text-muted small">Rice Product #{{ $rice->id }}</span>
-                    </div>
-                </div>
 
-                <div class="row g-3">
-                    <div class="col-sm-6">
-                        <div class="p-3 rounded" style="background:#f9f9f9;">
-                            <div class="text-muted small mb-1">Price per Kilogram</div>
-                            <div class="fw-bold text-success fs-5">₱{{ number_format($rice->price_per_kg, 2) }}</div>
+                    <div class="grid gap-6 sm:grid-cols-2">
+                        <div class="rounded-2xl bg-gray-50 p-4">
+                            <p class="text-sm text-gray-500">Price per Kilogram</p>
+                            <p class="mt-2 text-xl font-semibold text-emerald-700">₱{{ number_format($rice->price_per_kg, 2) }}</p>
+                        </div>
+                        <div class="rounded-2xl bg-gray-50 p-4">
+                            <p class="text-sm text-gray-500">Stock Quantity</p>
+                            <p class="mt-2 text-xl font-semibold {{ $rice->stock_quantity_kg < 10 ? 'text-yellow-600' : 'text-gray-900' }}">{{ $rice->stock_quantity_kg }} kg</p>
+                            @if($rice->stock_quantity_kg < 10)
+                                <span class="mt-2 inline-flex rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-800">Low stock</span>
+                            @endif
                         </div>
                     </div>
-                    <div class="col-sm-6">
-                        <div class="p-3 rounded" style="background:#f9f9f9;">
-                            <div class="text-muted small mb-1">Stock Quantity</div>
-                            <div class="fw-bold fs-5 {{ $rice->stock_quantity < 10 ? 'text-warning' : 'text-dark' }}">
-                                {{ $rice->stock_quantity }} kg
-                                @if($rice->stock_quantity < 10)
-                                    <span class="badge bg-warning text-dark ms-1" style="font-size:.65rem;">Low Stock</span>
-                                @endif
-                            </div>
+
+                    <div class="rounded-2xl bg-gray-50 p-4">
+                        <p class="text-sm text-gray-500">Description</p>
+                        <p class="mt-2 text-gray-900">{{ $rice->description ?? 'No description provided.' }}</p>
+                    </div>
+
+                    <div class="grid gap-6 sm:grid-cols-2">
+                        <div class="rounded-2xl bg-gray-50 p-4">
+                            <p class="text-sm text-gray-500">Date Added</p>
+                            <p class="mt-2 text-gray-900">{{ $rice->created_at->format('F d, Y') }}</p>
+                        </div>
+                        <div class="rounded-2xl bg-gray-50 p-4">
+                            <p class="text-sm text-gray-500">Last Updated</p>
+                            <p class="mt-2 text-gray-900">{{ $rice->updated_at->format('F d, Y') }}</p>
                         </div>
                     </div>
-                    <div class="col-12">
-                        <div class="p-3 rounded" style="background:#f9f9f9;">
-                            <div class="text-muted small mb-1">Description</div>
-                            <div>{{ $rice->description ?? 'No description provided.' }}</div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="p-3 rounded" style="background:#f9f9f9;">
-                            <div class="text-muted small mb-1">Date Added</div>
-                            <div class="fw-500">{{ $rice->created_at->format('F d, Y') }}</div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="p-3 rounded" style="background:#f9f9f9;">
-                            <div class="text-muted small mb-1">Last Updated</div>
-                            <div class="fw-500">{{ $rice->updated_at->format('F d, Y') }}</div>
-                        </div>
+
+                    <div class="flex flex-col gap-3 sm:flex-row sm:justify-end">
+                        <a href="{{ route('rice.edit', $rice) }}" class="inline-flex justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">Edit Item</a>
+                        <form action="{{ route('rice.destroy', $rice) }}" method="POST" class="inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" onclick="return confirm('Delete {{ $rice->name }}? This cannot be undone.')" class="inline-flex justify-center rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500">Delete</button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="d-flex gap-2">
-            <a href="{{ route('rice.edit', $rice) }}" class="btn btn-brand">
-                <i class="bi bi-pencil me-1"></i> Edit Item
-            </a>
-            <form action="{{ route('rice.destroy', $rice) }}" method="POST"
-                  onsubmit="return confirm('Delete {{ $rice->name }}? This cannot be undone.')">
-                @csrf @method('DELETE')
-                <button type="submit" class="btn btn-outline-danger">
-                    <i class="bi bi-trash me-1"></i> Delete
-                </button>
-            </form>
-            <a href="{{ route('rice.index') }}" class="btn btn-outline-secondary">Back to List</a>
-        </div>
     </div>
-</div>
-@endsection
+</x-app-layout>

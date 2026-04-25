@@ -23,7 +23,7 @@ class RiceController extends Controller
         $validated = $request->validate([
             'name'           => 'required|string|max:100',
             'price_per_kg'   => 'required|numeric|min:0',
-            'stock_quantity' => 'required|integer|min:0',
+            'stock_quantity_kg' => 'required|integer|min:0',
             'description'    => 'nullable|string|max:500',
         ]);
 
@@ -48,7 +48,7 @@ class RiceController extends Controller
         $validated = $request->validate([
             'name'           => 'required|string|max:100',
             'price_per_kg'   => 'required|numeric|min:0',
-            'stock_quantity' => 'required|integer|min:0',
+            'stock_quantity_kg' => 'required|integer|min:0',
             'description'    => 'nullable|string|max:500',
         ]);
 
